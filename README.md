@@ -39,16 +39,6 @@ A simple Python scraper that crawls an Amazon search results page, follows every
 | image  | Main product image URL                |
 | url    | Product page URL                      |
 
-## Known Issues / TODO
-
-This script has a few bugs that need fixing before it will run:
-
-- **`sum`/`counter` not tracked properly** — `get_product_info` references `sum` and `counter` but never declares them `global`, so it will raise an `UnboundLocalError`. Consider computing the average from the returned DataFrame in `main()` instead.
-- **Invalid syntax in `parse_listing`** — the line `Recursively check the next page` is a stray comment missing its `#`, which will cause a `SyntaxError`.
-- **Commented-out description field** — the `description` key is left in the returned dict as a triple-quoted string literal, which will break the dictionary. Either implement the description scrape or remove the line entirely.
-- **No rate limiting** — the scraper sends requests back-to-back with no delay, which risks triggering Amazon's bot detection or getting your IP blocked. Consider adding `time.sleep()` between requests.
-- **No error handling around `requests.get`** — network failures or timeouts will crash the script.
-- **Empty `search_url`** — must be set before running.
 
 ## Legal Note
 
