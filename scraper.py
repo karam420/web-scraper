@@ -81,21 +81,20 @@ def parse_listing(listing_url):
             if product_info:
                 page_data.append(product_info)
     
-    # Pagination section here, remove triple quotes to go brrrrr
-    '''next_page_element = soup_search.select_one("a.s-pagination-next")
+    next_page_element = soup_search.select_one("a.s-pagination-next")
     if next_page_element:
         next_page_url = next_page_element.attrs.get("href")
         next_page_url = urljoin(listing_url, next_page_url)
         print(f"Moving onto next page: {next_page_url}", flush=True)
         Recursively check the next page
-        page_data += parse_listing(next_page_url)'''
+        page_data += parse_listing(next_page_url)
 
     return page_data
 
 # Use pandas in main to put page_data in a csv file
 def main():
     data = []
-    search_url = "" # PUT SEARCH URL HERE!!!
+    search_url = "" # URL of the site you want to scrape goes here
     data = parse_listing(search_url)
     pd.DataFrame(data).to_csv("laptops.csv", index=False)
     average = sum / counter
