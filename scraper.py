@@ -11,7 +11,7 @@ headers = {
 }
 
 visited_urls = set()
-sum = 0
+total_price = 0
 counter = 0
 average = 0
 
@@ -48,18 +48,20 @@ def get_product_info(url):
     image = image_element.attrs.get("src") if image_element else None
 
     # Product Description
-    '''description_element = soup.select_one("#productDescription").text.strip()
-    description = description_element.text.strip() if description_element else None'''
+    description_element = soup.select_one("#productDescription")
+    description = description_element.text.strip() if description_element else None
 
-    sum += price
-    counter += 1
-    
+    global total_price, counter
+    if isinstance(price, float):
+        total_price += price
+        counter += 1
+
     return {
         "title": title,
         "price": price,
         "rating": rating,
         "image": image,
-        '''"description": description,'''
+        "description": description,
         "url": url
     }
 
@@ -86,7 +88,7 @@ def parse_listing(listing_url):
         next_page_url = next_page_element.attrs.get("href")
         next_page_url = urljoin(listing_url, next_page_url)
         print(f"Moving onto next page: {next_page_url}", flush=True)
-        Recursively check the next page
+        # Recursively check the next page
         page_data += parse_listing(next_page_url)
 
     return page_data
@@ -97,7 +99,8 @@ def main():
     search_url = "" # URL of the site you want to scrape goes here
     data = parse_listing(search_url)
     pd.DataFrame(data).to_csv("laptops.csv", index=False)
-    average = sum / counter
+    average = total_price / counter if counter else 0
+    print(f"Average price: {average:.2f}", flush=True)
 
 if __name__ == "__main__":
     main()
